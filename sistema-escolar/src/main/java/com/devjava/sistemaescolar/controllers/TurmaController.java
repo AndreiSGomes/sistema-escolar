@@ -1,0 +1,31 @@
+package com.devjava.sistemaescolar.controllers;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+import com.devjava.sistemaescolar.entities.Turma;
+import com.devjava.sistemaescolar.services.TurmaService;
+
+@RestController
+@RequestMapping(value = "/turmas")
+public class TurmaController {
+	
+	private final TurmaService turmaService;
+	
+	TurmaController(TurmaService turmaService) {
+		this.turmaService = turmaService;
+	}
+	
+	@PostMapping
+	public ResponseEntity<Turma> save(@RequestBody Turma turma) {
+		turma = turmaService.save(turma);
+		return ResponseEntity.status(HttpStatus.CREATED).body(turma);
+		
+	}
+	
+	
+	
+}

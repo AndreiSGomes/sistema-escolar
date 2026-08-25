@@ -1,0 +1,34 @@
+package com.devjava.sistemaescolar.services;
+
+import java.util.Optional;
+import org.springframework.stereotype.Service;
+
+import com.devjava.sistemaescolar.entities.Turma;
+import com.devjava.sistemaescolar.repositories.TurmaRepository;
+
+@Service
+public class TurmaService {
+
+	private final TurmaRepository turmaRepository;
+
+	TurmaService(TurmaRepository turmaRepository) {
+		this.turmaRepository = turmaRepository;
+	}
+	
+	public Turma findById(Integer id) {
+		Optional<Turma> obj = turmaRepository.findById(id);
+		return obj.get();
+	}
+	
+	public Turma save(Turma obj) {
+		Turma turma = new Turma();
+		turma.setSerie(obj.getSerie());
+		turma.setTurno(obj.getTurno());
+		turma.setAnoLetivo(obj.getAnoLetivo());
+		turma.setComplemento(obj.getComplemento());
+		
+		return turmaRepository.save(turma);
+	}
+	
+	
+}

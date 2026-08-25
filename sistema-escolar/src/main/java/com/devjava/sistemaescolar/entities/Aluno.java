@@ -1,27 +1,44 @@
 package com.devjava.sistemaescolar.entities;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.Objects;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 
+@Entity
 public class Aluno implements Serializable{
 	private static final long serialVersionUID = 1L;
-
+	
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 	private String nome;
-	private Date dataNascimento;
+	@Column(name = "dt_nascimento")
+	private LocalDate dataNascimento;
 	private String endereco;
+	@Column(name = "nome_responsavel")
 	private String nomeResponsavel;
+	@Column(name = "cpf_responsavel")
 	private String cpfResponsavel;
+	@Column(name = "celular_responsavel")
 	private String celularResponsavel;
+	@Column(name = "email_responsavel")
 	private String emailResponsavel;
 	
+	@ManyToOne
+	@JoinColumn(name = "turma_id")
 	private Turma turma;
 	
 	public Aluno() { }
 	
-	public Aluno(Integer id, String nome, Date dataNascimento, String endereco, String nomeResponsavel,
+	public Aluno(Integer id, String nome, LocalDate dataNascimento, String endereco, String nomeResponsavel,
 			String cpfResponsavel, String celularResponsavel, String emailResponsavel, Turma turma) {
 		this.id = id;
 		this.nome = nome;
@@ -48,10 +65,10 @@ public class Aluno implements Serializable{
 		this.nome = nome;
 	}
 
-	public Date getDataNascimento() {
+	public LocalDate getDataNascimento() {
 		return dataNascimento;
 	}
-	public void setDataNascimento(Date dataNascimento) {
+	public void setDataNascimento(LocalDate dataNascimento) {
 		this.dataNascimento = dataNascimento;
 	}
 
