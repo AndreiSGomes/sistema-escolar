@@ -9,7 +9,6 @@ import com.devjava.sistemaescolar.entities.Aluno;
 import com.devjava.sistemaescolar.entities.Turma;
 import com.devjava.sistemaescolar.repositories.AlunoRepository;
 import com.devjava.sistemaescolar.repositories.TurmaRepository;
-import com.devjava.sistemaescolar.services.exceptions.ControllerNotFoundException;
 
 @Service
 public class AlunoService {
@@ -22,12 +21,8 @@ public class AlunoService {
 		this.turmaRepository = turmaRepository;
 	}
 	
-	public Aluno save(Aluno obj) {
-		Optional<Turma> turmaOpt = turmaRepository.findById(obj.getTurma().getId());
-		if(turmaOpt.isEmpty()) {
-			throw new ControllerNotFoundException("Turma não encontrada. id: " + obj.getTurma().getId());
-		}
-		
+	public Aluno insert(Aluno obj) {
+		Optional<Turma> turmaOpt = turmaRepository.findById(obj.getTurma().getId());	
 		Turma turma = turmaOpt.get();
 		
 		Aluno aluno = new Aluno();
@@ -39,7 +34,7 @@ public class AlunoService {
 		aluno.setCelularResponsavel(obj.getCelularResponsavel());
 		aluno.setEmailResponsavel(obj.getEmailResponsavel());
 		aluno.setTurma(turma);
-		
+	
 		return alunoRepository.save(aluno);
 	}
 	

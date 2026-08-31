@@ -2,19 +2,35 @@ package com.devjava.sistemaescolar.entities;
 
 import java.io.Serializable;
 import java.util.Objects;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 
+@Entity
+@Table(name = "tb_turma_disciplina_professor")
 public class TurmaDisciplinaProfessor implements Serializable {
 	private static final long serialVersionUID= 1L; 
 	
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
+	@ManyToOne
+	@JoinColumn(name = "turma_id")
 	private Turma turma;
+	@ManyToOne
+	@JoinColumn(name = "disciplina_id")
 	private Disciplina disciplina;
+	@ManyToOne
+	@JoinColumn(name = "professor_id")
 	private Professor professor;
 	
 	public TurmaDisciplinaProfessor() {}
 
 	public TurmaDisciplinaProfessor(Integer id, Turma turma, Disciplina disciplina, Professor professor) {
-		super();
 		this.id = id;
 		this.turma = turma;
 		this.disciplina = disciplina;

@@ -5,14 +5,18 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
 
 @Entity
+@Table(name = "tb_turma")
 public class Turma implements Serializable {
 	private static final long serialVersionUID= 1L; 
 	
@@ -23,14 +27,15 @@ public class Turma implements Serializable {
 	private String turno;
 	@Column(name = "ano_letivo")
 	private Integer anoLetivo;
-	private char complemento;
+	private Character complemento;
 	
+	@JsonIgnore
 	@OneToMany(mappedBy = "turma")
 	private Set<Aluno> alunos = new HashSet<>();
 	
 	public Turma() {}
 
-	public Turma(Integer id, Integer serie, String turno, Integer anoLetivo, char complemento) {
+	public Turma(Integer id, Integer serie, String turno, Integer anoLetivo, Character complemento) {
 		super();
 		this.id = id;
 		this.serie = serie;
@@ -75,7 +80,7 @@ public class Turma implements Serializable {
 		return complemento;
 	}
 
-	public void setComplemento(char complemento) {
+	public void setComplemento(Character complemento) {
 		this.complemento = complemento;
 	}
 
@@ -95,7 +100,5 @@ public class Turma implements Serializable {
 		Turma other = (Turma) obj;
 		return Objects.equals(id, other.id);
 	}
-	
-	
 	
 }
