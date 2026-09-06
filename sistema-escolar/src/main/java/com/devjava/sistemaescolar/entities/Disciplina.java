@@ -23,7 +23,7 @@ public class Disciplina implements Serializable {
 	@Column(name = "carga_horaria")
 	private Integer cargaHoraria;
 	
-	@OneToMany(mappedBy = "nota")
+	@OneToMany(mappedBy = "disciplina")
 	public List<Nota> notas = new ArrayList<>();
 	
 	public Disciplina() {}

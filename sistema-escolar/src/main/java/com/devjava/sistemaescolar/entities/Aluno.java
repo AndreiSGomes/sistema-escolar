@@ -39,10 +39,10 @@ public class Aluno implements Serializable{
 	@JoinColumn(name = "turma_id")
 	private Turma turma;
 	
-	@OneToMany(mappedBy = "falta")
+	@OneToMany(mappedBy = "aluno")
 	private List<Falta> faltas = new ArrayList<>();
 	
-	@OneToMany(mappedBy = "nota")
+	@OneToMany(mappedBy = "aluno")
 	private List<Nota> notas = new ArrayList<>();
 	
 	public Aluno() { }
