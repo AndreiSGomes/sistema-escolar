@@ -2,11 +2,13 @@
 
 Projeto de estudo com **Java + Spring Boot + JPA/Hibernate + PostgreSQL**, desenvolvido em etapas incrementais, com commits progressivos documentando a evolução.
 
+> 🔧 **Status atual:** CRUD básico de Aluno, Professor e Turma funcionando via API REST, com PostgreSQL + JPA/Hibernate. Relacionamentos entre entidades corrigidos e conferidos. Próximos passos: entidade `TurmaDisciplinaProfessor`, tratamento global de erros e endpoints CRUD restantes.
+
 ---
 
 ## 📌 Sobre o projeto
 
-Sistema de gerenciamento escolar simples, com cadastro de alunos, professores, disciplinas, turmas e matrículas. Projeto criado para consolidar conceitos de JPA/Hibernate, arquitetura em camadas e boas práticas com Spring Boot.
+Sistema de gerenciamento escolar simples, com cadastro de alunos, professores, disciplinas e turmas, além de lançamento de notas e faltas. Projeto criado para consolidar conceitos de JPA/Hibernate, arquitetura em camadas e boas práticas com Spring Boot.
 
 ---
 
@@ -123,57 +125,57 @@ Porque no modelo a partir do 6º ano, uma turma tem vários professores (um de M
 ## ✅ Roadmap de Desenvolvimento
 
 ### Etapa 1 — Setup do projeto
-- [ ] Criar projeto Spring Boot (via Spring Initializr ou STS)
-- [ ] Configurar `pom.xml` (Java 17, dependências: Web, JPA, PostgreSQL Driver)
-- [ ] Configurar `application.properties` (conexão com banco)
-- [ ] Criar banco de dados no PostgreSQL
-- [ ] Subir projeto e validar conexão com o banco
-- [ ] Primeiro commit: "chore: setup inicial do projeto"
+- [x] Criar projeto Spring Boot (via Spring Initializr ou STS)
+- [x] Configurar `pom.xml` (Java 17, dependências: Web, JPA, PostgreSQL Driver)
+- [x] Configurar `application.properties` (conexão com banco)
+- [x] Criar banco de dados no PostgreSQL
+- [x] Subir projeto e validar conexão com o banco
+- [x] Primeiro commit: "chore: setup inicial do projeto"
 
 ### Etapa 2 — Camada de domínio (entidades)
-- [ ] Criar entidade `Turma`
-- [ ] Criar entidade `Aluno` (com `@ManyToOne` pra `Turma`)
-- [ ] Criar entidade `Professor`
-- [ ] Criar entidade `Disciplina`
-- [ ] Criar entidade associativa `TurmaDisciplinaProfessor`
-- [ ] Criar entidade `Nota`
-- [ ] Criar entidade `Falta`
-- [ ] Mapear relacionamentos (`@OneToMany`, `@ManyToOne`)
-- [ ] Commit: "feat: criação das entidades do domínio"
+- [x] Criar entidade `Turma`
+- [x] Criar entidade `Aluno` (com `@ManyToOne` pra `Turma`)
+- [x] Criar entidade `Professor`
+- [x] Criar entidade `Disciplina`
+- [ ] Criar entidade associativa `TurmaDisciplinaProfessor` — classe já existe, mas **ainda sem anotações JPA** (`@Entity`, `@Id`, `@ManyToOne`); hoje é uma classe Java comum, não persistida
+- [x] Criar entidade `Nota`
+- [x] Criar entidade `Falta`
+- [x] Mapear relacionamentos (`@OneToMany`, `@ManyToOne`) — mapeamentos corrigidos e conferidos
+- [x] Commit: "feat: criação das entidades do domínio"
 
 ### Etapa 3 — Camada de persistência
-- [ ] Criar `TurmaRepository`
-- [ ] Criar `AlunoRepository`
-- [ ] Criar `ProfessorRepository`
-- [ ] Criar `DisciplinaRepository`
-- [ ] Criar `TurmaDisciplinaProfessorRepository`
-- [ ] Criar `NotaRepository` (ex: buscar notas por aluno e bimestre)
-- [ ] Criar `FaltaRepository` (ex: contar faltas por aluno e disciplina)
-- [ ] Commit: "feat: repositórios JPA"
+- [x] Criar `TurmaRepository`
+- [x] Criar `AlunoRepository`
+- [x] Criar `ProfessorRepository`
+- [x] Criar `DisciplinaRepository`
+- [ ] Criar `TurmaDisciplinaProfessorRepository` — depende da entidade ser mapeada primeiro
+- [x] Criar `NotaRepository` (ainda sem métodos de busca customizados por aluno/bimestre — só CRUD padrão)
+- [x] Criar `FaltaRepository` (ainda sem métodos de contagem customizados — só CRUD padrão)
+- [x] Commit: "feat: repositórios JPA"
 
 ### Etapa 4 — Seed de dados de teste
 - [ ] Criar classe de configuração (`CommandLineRunner`) para popular o banco
 - [ ] Commit: "feat: dados de teste (seed)"
 
 ### Etapa 5 — Camada de serviço
-- [ ] Criar `TurmaService`
-- [ ] Criar `AlunoService` (regras de negócio + tratamento de exceções)
-- [ ] Criar `ProfessorService`
-- [ ] Criar `TurmaDisciplinaProfessorService` (ex: atribuir professor a uma turma/disciplina)
-- [ ] Criar `NotaService` (ex: lançar avaliação, calcular média do aluno por disciplina/bimestre a partir de todas as avaliações)
-- [ ] Criar `FaltaService` (ex: registrar falta por dia, calcular total/percentual de faltas por aluno)
-- [ ] Criar exceções customizadas (`ResourceNotFoundException`, etc.)
-- [ ] Commit: "feat: camada de serviço"
+- [x] Criar `TurmaService` (`insert`, `findById`, `findAll`)
+- [x] Criar `AlunoService` (`save` já busca e vincula `Turma`; trata turma inexistente com exceção customizada)
+- [x] Criar `ProfessorService` (`insert`, `findById`, `findAll`)
+- [ ] Criar `TurmaDisciplinaProfessorService`
+- [ ] Criar `NotaService` — CRUD básico existe (`insert`, `findById`, `findAll`), mas **ainda falta a lógica de cálculo de média** por aluno/disciplina/bimestre
+- [ ] Criar `FaltaService` — CRUD básico existe, mas **ainda falta a lógica de contagem/percentual** de faltas por aluno
+- [ ] Criar exceções customizadas — `ControllerNotFoundException` já existe, mas só é usada no `AlunoService`; os demais services usam `.get()` direto no `Optional` (gera erro genérico se o ID não existir, em vez de uma exceção tratada)
+- [x] Commit: "feat: camada de serviço"
 
 ### Etapa 6 — Camada REST (Controllers)
-- [ ] Criar `TurmaResource` com endpoints CRUD
-- [ ] Criar `AlunoResource`
-- [ ] Criar `ProfessorResource`
-- [ ] Criar `NotaResource` (ex: lançar avaliação, listar avaliações do aluno, consultar média por bimestre)
-- [ ] Criar `FaltaResource` (ex: registrar falta do dia, listar faltas por aluno, consultar total de faltas)
-- [ ] Criar handler global de exceções (`@ControllerAdvice`)
-- [ ] Testar endpoints via Postman/Insomnia
-- [ ] Commit: "feat: endpoints REST"
+- [ ] Criar `TurmaController` — só `POST` implementado; faltam `GET` (all/by id), `PUT`, `DELETE`
+- [ ] Criar `AlunoController` — `GET` (all/by id) e `POST` prontos; faltam `PUT`, `DELETE`
+- [ ] Criar `ProfessorController` — `GET` (all/by id) e `POST` prontos; faltam `PUT`, `DELETE`
+- [ ] Criar `NotaController`
+- [ ] Criar `FaltaController`
+- [ ] Criar handler global de exceções (`@ControllerAdvice`) — **próxima etapa prioritária**
+- [x] Testar endpoints via Postman/Insomnia
+- [x] Commit: "feat: endpoints REST"
 
 ### Etapa 7 — Melhorias e boas práticas
 - [ ] Criar DTOs (separar entidade de payload de API)
@@ -183,7 +185,7 @@ Porque no modelo a partir do 6º ano, uma turma tem vários professores (um de M
 - [ ] Commit: "feat: DTOs, validações e documentação da API"
 
 ### Etapa 8 — Deploy e documentação final
-- [ ] Criar `README.md` completo (este roadmap pode virar parte dele)
+- [x] Criar `README.md` completo (este roadmap virou parte dele — em atualização contínua conforme o projeto avança)
 - [ ] Adicionar instruções de execução local
 - [ ] (Opcional) Deploy em serviço gratuito (Render, Railway, etc.)
 - [ ] Commit: "docs: documentação final do projeto"
@@ -198,7 +200,19 @@ Porque no modelo a partir do 6º ano, uma turma tem vários professores (um de M
 
 > 💡 Essa etapa foi deixada por último de propósito — segurança/autenticação costuma ser mais fácil de entender depois que o CRUD básico já está funcionando e testado.
 
+
+## 🎯 Próximos passos (a retomar futuramente)
+
+O mapeamento de relacionamentos (`@OneToMany`/`mappedBy`) já foi corrigido e conferido. Os itens abaixo ficam registrados para uma próxima sessão de desenvolvimento:
+
+1. Mapear `TurmaDisciplinaProfessor` como entidade JPA (`@Entity`, `@Id`, `@ManyToOne` nos 3 relacionamentos), e então criar seu `Repository`, `Service` e `Controller`
+2. Padronizar o tratamento de "não encontrado" em todos os services (hoje só `AlunoService` trata isso; os demais usam `.get()` direto no `Optional`)
+3. Criar o `@ControllerAdvice` (handler global de exceções), convertendo `ControllerNotFoundException` em resposta `404`
+4. Completar os endpoints CRUD que faltam (`PUT`, `DELETE` em Aluno/Professor/Turma; controllers inteiros de Disciplina/Nota/Falta)
+5. Implementar a lógica de negócio pendente em `NotaService` (cálculo de média) e `FaltaService` (contagem/percentual)
+
 ---
+
 
 ## 🚀 Como rodar o projeto localmente
 
@@ -211,7 +225,7 @@ Porque no modelo a partir do 6º ano, uma turma tem vários professores (um de M
 
 1. **Clone o repositório**
    ```bash
-   git clone https://github.com/seu-usuario/sistema-escolar.git
+   git clone https://github.com/AndreiSGomes/sistema-escolar.git
    cd sistema-escolar
    ```
 
