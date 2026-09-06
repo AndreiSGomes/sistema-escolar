@@ -105,7 +105,6 @@ erDiagram
     PROFESSOR ||--o| USUARIO : acessa
 ```
 
-> 💡 Esse bloco de código (` ```mermaid `) é renderizado automaticamente pelo GitHub quando colocado num arquivo `.md` — não precisa gerar imagem separada.
 
 **Resumo das relações:**
 - **Aluno** e **Professor** são entidades independentes (sem superclasse), cada uma com seus próprios campos: nome, data de nascimento, e-mail, celular e endereço (campo único de texto)
