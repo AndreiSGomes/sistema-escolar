@@ -1,23 +1,32 @@
 package com.devjava.sistemaescolar.entities;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.Objects;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 
+@Entity
 public class Professor implements Serializable{
 	private static final long serialVersionUID = 1L;
 
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 	private String cpf;
 	private String nome;
-	private Date dataNascimento;
+	@Column(name = "dt_nascimento")
+	private LocalDate dataNascimento;
 	private String endereco;
 	private String celular;
 	private String email;
 	
 	public Professor() {}
 
-	public Professor(Integer id, String cpf, String nome, Date dataNascimento, String endereco, String celular,
+	public Professor(Integer id, String cpf, String nome, LocalDate dataNascimento, String endereco, String celular,
 			String email) {
 		super();
 		this.id = id;
@@ -53,11 +62,11 @@ public class Professor implements Serializable{
 		this.nome = nome;
 	}
 
-	public Date getDataNascimento() {
+	public LocalDate getDataNascimento() {
 		return dataNascimento;
 	}
 
-	public void setDataNascimento(Date dataNascimento) {
+	public void setDataNascimento(LocalDate dataNascimento) {
 		this.dataNascimento = dataNascimento;
 	}
 

@@ -3,14 +3,29 @@ package com.devjava.sistemaescolar.entities;
 import java.io.Serializable;
 import java.util.Objects;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+
+@Entity
 public class Nota implements Serializable {
 	private static final long serialVersionUID= 1L; 
 	
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 	private Integer bimestre;
 	private String descricao;
 	
+	@ManyToOne
+	@JoinColumn(name = "aluno_id")
 	private Aluno aluno;
+	
+	@ManyToOne
+	@JoinColumn(name = "disciplina_id")
 	private Disciplina disciplina;
 	
 	public Nota() {}
