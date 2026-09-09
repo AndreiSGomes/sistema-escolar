@@ -13,7 +13,7 @@ import com.devjava.sistemaescolar.entities.Turma;
 import com.devjava.sistemaescolar.services.TurmaService;
 
 @RestController
-@RequestMapping(value = "/turmas")
+@RequestMapping("/turmas")
 public class TurmaController {
 	
 	private final TurmaService turmaService;
@@ -28,7 +28,7 @@ public class TurmaController {
 		return ResponseEntity.ok().body(turmas);
 	}
 	
-	@GetMapping(value = "/{id}")
+	@GetMapping("/{id}")
 	public ResponseEntity<Turma> findById(@PathVariable Integer id) {
 		Turma turma = turmaService.findById(id);
 		return ResponseEntity.ok().body(turma);

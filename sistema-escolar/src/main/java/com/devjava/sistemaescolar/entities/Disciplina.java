@@ -31,6 +31,10 @@ public class Disciplina implements Serializable {
 	@OneToMany(mappedBy = "disciplina")
 	public List<Nota> notas = new ArrayList<>();
 	
+	@JsonIgnore
+	@OneToMany(mappedBy = "disciplina")
+	private List<TurmaDisciplinaProfessor> turmaDisciplinaProfessor = new ArrayList<>();
+	
 	public Disciplina() {}
 	
 	public Disciplina(Integer id, String nome, Integer cargaHoraria) {

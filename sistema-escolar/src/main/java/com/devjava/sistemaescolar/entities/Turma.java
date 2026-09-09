@@ -1,7 +1,9 @@
 package com.devjava.sistemaescolar.entities;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
@@ -32,6 +34,10 @@ public class Turma implements Serializable {
 	@JsonIgnore
 	@OneToMany(mappedBy = "turma")
 	private Set<Aluno> alunos = new HashSet<>();
+	
+	@JsonIgnore
+	@OneToMany(mappedBy = "turma")
+	private List<TurmaDisciplinaProfessor> turmaDisciplinaProfessor = new ArrayList<>();
 	
 	public Turma() {}
 

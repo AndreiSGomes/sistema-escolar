@@ -2,12 +2,18 @@ package com.devjava.sistemaescolar.entities;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -25,6 +31,10 @@ public class Professor implements Serializable{
 	private String endereco;
 	private String celular;
 	private String email;
+	
+	@JsonIgnore
+	@OneToMany(mappedBy = "professor")
+	private List<TurmaDisciplinaProfessor> turmaDisciplinaProfessor = new ArrayList<>();
 	
 	public Professor() {}
 

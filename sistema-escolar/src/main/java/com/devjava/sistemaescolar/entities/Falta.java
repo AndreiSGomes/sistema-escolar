@@ -1,9 +1,9 @@
 package com.devjava.sistemaescolar.entities;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.Objects;
-
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -20,7 +20,8 @@ public class Falta  implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
-	private Date data;
+	@JsonFormat(pattern = "yyyy-MM-dd")
+	private LocalDate data;
 	private boolean justificada;
 
 	@ManyToOne
@@ -29,7 +30,7 @@ public class Falta  implements Serializable {
 	
 	public Falta() {}
 
-	public Falta(Integer id, Date data, boolean justificada, Aluno aluno) {
+	public Falta(Integer id, LocalDate data, boolean justificada, Aluno aluno) {
 		this.id = id;
 		this.data = data;
 		this.justificada = justificada;
@@ -52,11 +53,11 @@ public class Falta  implements Serializable {
 		this.justificada = justificada;
 	}
 	
-	public Date getData() {
+	public LocalDate getData() {
 		return data;
 	}
 
-	public void setData(Date data) {
+	public void setData(LocalDate data) {
 		this.data = data;
 	}
 
