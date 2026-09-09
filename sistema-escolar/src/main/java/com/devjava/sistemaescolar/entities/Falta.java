@@ -22,6 +22,7 @@ public class Falta  implements Serializable {
 	private Integer id;
 	private Date data;
 	private boolean justificada;
+
 	@ManyToOne
 	@JoinColumn(name = "aluno_id")
 	private Aluno aluno;

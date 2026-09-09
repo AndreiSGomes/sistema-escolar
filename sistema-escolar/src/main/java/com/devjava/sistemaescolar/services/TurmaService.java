@@ -15,17 +15,9 @@ public class TurmaService {
 		this.turmaRepository = turmaRepository;
 	}
 	
-	public List<Turma> findAll() {
-		List<Turma> turmas = turmaRepository.findAll();
-		return turmas;
-	}
-	
-	public Turma findById(Integer id) {
-		Optional<Turma> obj = turmaRepository.findById(id);
-		return obj.get();
-	}
-	
-	public Turma save(Turma obj) {
+
+
+	public Turma insert(Turma obj) {
 		Turma turma = new Turma();
 		turma.setSerie(obj.getSerie());
 		turma.setTurno(obj.getTurno());
@@ -34,5 +26,14 @@ public class TurmaService {
 		return turmaRepository.save(turma);
 	}
 	
+	public Turma findById(Integer id) {
+		Optional<Turma> obj = turmaRepository.findById(id);
+		return obj.get();
+	}
+	
+	public List<Turma> findAll() {
+		List<Turma> turmas = turmaRepository.findAll();
+		return turmas;
+	}	
 	
 }

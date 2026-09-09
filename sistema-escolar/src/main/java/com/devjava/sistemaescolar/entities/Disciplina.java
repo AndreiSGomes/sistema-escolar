@@ -1,7 +1,11 @@
 package com.devjava.sistemaescolar.entities;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -9,6 +13,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.persistence.OneToMany;
 
 @Entity
 @Table(name = "tb_disciplina")
@@ -21,6 +26,10 @@ public class Disciplina implements Serializable {
 	private String nome;
 	@Column(name = "carga_horaria")
 	private Integer cargaHoraria;
+	
+	@JsonIgnore
+	@OneToMany(mappedBy = "disciplina")
+	public List<Nota> notas = new ArrayList<>();
 	
 	public Disciplina() {}
 	

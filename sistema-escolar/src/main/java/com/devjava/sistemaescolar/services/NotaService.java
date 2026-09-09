@@ -2,9 +2,7 @@ package com.devjava.sistemaescolar.services;
 
 import java.util.List;
 import java.util.Optional;
-
 import org.springframework.stereotype.Service;
-
 import com.devjava.sistemaescolar.entities.Aluno;
 import com.devjava.sistemaescolar.entities.Disciplina;
 import com.devjava.sistemaescolar.entities.Nota;

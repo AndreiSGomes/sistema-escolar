@@ -37,7 +37,7 @@ public class TurmaController {
 	
 	@PostMapping
 	public ResponseEntity<Turma> save(@RequestBody Turma turma) {
-		turma = turmaService.save(turma);
+		turma = turmaService.insert(turma);
 		return ResponseEntity.status(HttpStatus.CREATED).body(turma);
 		
 	}

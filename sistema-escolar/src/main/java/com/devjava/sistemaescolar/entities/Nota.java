@@ -2,7 +2,6 @@ package com.devjava.sistemaescolar.entities;
 
 import java.io.Serializable;
 import java.util.Objects;
-
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -22,9 +21,11 @@ public class Nota implements Serializable {
 	private Float valor;
 	private Integer bimestre;
 	private String descricao;
+
 	@ManyToOne
 	@JoinColumn(name = "aluno_id")
 	private Aluno aluno;
+	
 	@ManyToOne
 	@JoinColumn(name = "disciplina_id")
 	private Disciplina disciplina;
@@ -82,6 +83,7 @@ public class Nota implements Serializable {
 	public void setDisciplina(Disciplina disciplina) {
 		this.disciplina = disciplina;
 	}
+	
 
 	@Override
 	public int hashCode() {

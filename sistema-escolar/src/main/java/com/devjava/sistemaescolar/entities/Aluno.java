@@ -2,10 +2,11 @@ package com.devjava.sistemaescolar.entities;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
-
 import com.fasterxml.jackson.annotation.JsonFormat;
-
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -13,6 +14,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -40,6 +42,14 @@ public class Aluno implements Serializable{
 	@ManyToOne
 	@JoinColumn(name = "turma_id")
 	private Turma turma;
+	
+	@JsonIgnore
+	@OneToMany(mappedBy = "aluno")
+	private List<Falta> faltas = new ArrayList<>();
+	
+	@JsonIgnore
+	@OneToMany(mappedBy = "aluno")
+	private List<Nota> notas = new ArrayList<>();
 	
 	public Aluno() { }
 	
@@ -134,11 +144,5 @@ public class Aluno implements Serializable{
 		Aluno other = (Aluno) obj;
 		return Objects.equals(id, other.id);
 	}
-
-	/*
-	@Override
-	public String toString() {
-		return nome + dataNascimento + endereco + turma.getId() + turma.getSerie() + turma.getAnoLetivo();
-	}*/
 	
 }
