@@ -1,11 +1,11 @@
 package com.devjava.sistemaescolar.services;
 
 import java.util.List;
-import java.util.Optional;
 import org.springframework.stereotype.Service;
 import com.devjava.sistemaescolar.entities.Aluno;
 import com.devjava.sistemaescolar.entities.Disciplina;
 import com.devjava.sistemaescolar.entities.Nota;
+import com.devjava.sistemaescolar.exceptions.NaoEncontradoException;
 import com.devjava.sistemaescolar.repositories.AlunoRepository;
 import com.devjava.sistemaescolar.repositories.DisciplinaRepository;
 import com.devjava.sistemaescolar.repositories.NotaRepository;
@@ -23,28 +23,47 @@ public class NotaService {
 		this.disciplinaRepository = disciplinaRepository;
 	}
 	
-	public Nota insert(Nota obj) {
-		Optional<Aluno> aluno = alunoRepository.findById(obj.getAluno().getId());
-		Optional<Disciplina> disciplina = disciplinaRepository.findById(obj.getDisciplina().getId());
+	public Nota salvar(Nota obj) {
+		Aluno aluno = alunoRepository.findById(obj.getAluno().getId()).orElseThrow(() -> new NaoEncontradoException(obj.getAluno().getId()));
+		Disciplina disciplina = disciplinaRepository.findById(obj.getDisciplina().getId()).orElseThrow(() -> new NaoEncontradoException(obj.getDisciplina().getId()));
 				
 		Nota nota = new Nota();
 		nota.setValor(obj.getValor());
 		nota.setBimestre(obj.getBimestre());
 		nota.setDescricao(obj.getDescricao());
-		nota.setAluno(aluno.get());
-		nota.setDisciplina(disciplina.get());
+		nota.setAluno(aluno);
+		nota.setDisciplina(disciplina);
 		
 		return notaRepository.save(nota);
 	}
 	
-	public Nota findById(Integer id) {
-		Optional<Nota> obj = notaRepository.findById(id);
-		return obj.get();
+	public Nota buscarPorId(Integer id) {
+		Nota nota = notaRepository.findById(id).orElseThrow(() -> new NaoEncontradoException(id));
+		return nota;
 	}
 	
-	public List<Nota> findAll() {
+	public List<Nota> buscarTodos() {
 		List<Nota> notas = notaRepository.findAll();
 		return notas;
+	}
+	
+	public void deletarPorId(Integer id) {
+		buscarPorId(id);
+		notaRepository.deleteById(id);
+	}
+	
+	public Nota atualizar(Integer id, Nota obj) {
+		Nota nota = buscarPorId(id);
+		Aluno aluno = alunoRepository.findById(obj.getAluno().getId()).orElseThrow(() -> new NaoEncontradoException(obj.getAluno().getId()));
+		Disciplina disciplina = disciplinaRepository.findById(obj.getDisciplina().getId()).orElseThrow(() -> new NaoEncontradoException(obj.getDisciplina().getId()));
+				
+		nota.setValor(obj.getValor());
+		nota.setBimestre(obj.getBimestre());
+		nota.setDescricao(obj.getDescricao());
+		nota.setAluno(aluno);
+		nota.setDisciplina(disciplina);
+		
+		return notaRepository.save(nota);
 	}
 	
 }

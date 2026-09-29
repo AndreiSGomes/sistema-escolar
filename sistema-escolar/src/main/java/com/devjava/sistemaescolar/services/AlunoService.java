@@ -1,10 +1,10 @@
 package com.devjava.sistemaescolar.services;
 
 import java.util.List;
-import java.util.Optional;
 import org.springframework.stereotype.Service;
 import com.devjava.sistemaescolar.entities.Aluno;
 import com.devjava.sistemaescolar.entities.Turma;
+import com.devjava.sistemaescolar.exceptions.NaoEncontradoException;
 import com.devjava.sistemaescolar.repositories.AlunoRepository;
 import com.devjava.sistemaescolar.repositories.TurmaRepository;
 
@@ -19,9 +19,8 @@ public class AlunoService {
 		this.turmaRepository = turmaRepository;
 	}
 	
-	public Aluno insert(Aluno obj) {
-		Optional<Turma> turmaOpt = turmaRepository.findById(obj.getTurma().getId());	
-		Turma turma = turmaOpt.get();
+	public Aluno salvar(Aluno obj) {
+		Turma turma = turmaRepository.findById(obj.getTurma().getId()).orElseThrow(() -> new NaoEncontradoException(obj.getTurma().getId()));	
 		
 		Aluno aluno = new Aluno();
 		aluno.setNome(obj.getNome());
@@ -32,18 +31,39 @@ public class AlunoService {
 		aluno.setCelularResponsavel(obj.getCelularResponsavel());
 		aluno.setEmailResponsavel(obj.getEmailResponsavel());
 		aluno.setTurma(turma);
-	
+		
 		return alunoRepository.save(aluno);
 	}
 	
-	public List<Aluno> findAll() {
+	public Aluno buscarPorId(Integer id) {
+		Aluno aluno = alunoRepository.findById(id).orElseThrow(() -> new NaoEncontradoException(id));
+		return aluno;
+	}
+	
+	public List<Aluno> buscarTodos() {
 		List<Aluno> alunos = alunoRepository.findAll();
 		return alunos;
 	}
 	
-	public Aluno findById(Integer id) {
-		Optional<Aluno> obj = alunoRepository.findById(id);
-		return obj.get();
+	public void deletarPorId(Integer id) {
+		buscarPorId(id);
+		alunoRepository.deleteById(id);
+	}
+	
+	public Aluno atualizar(Integer id, Aluno obj) {
+		Aluno aluno = buscarPorId(id);
+		Turma turma = turmaRepository.findById(obj.getTurma().getId()).orElseThrow(() -> new NaoEncontradoException(obj.getTurma().getId())); 
+		
+		aluno.setNome(obj.getNome());
+		aluno.setDataNascimento(obj.getDataNascimento());
+		aluno.setEndereco(obj.getEndereco());
+		aluno.setNomeResponsavel(obj.getNomeResponsavel());
+		aluno.setCpfResponsavel(obj.getCpfResponsavel());
+		aluno.setCelularResponsavel(obj.getCelularResponsavel());
+		aluno.setEmailResponsavel(obj.getEmailResponsavel());
+		aluno.setTurma(turma);
+		
+		return alunoRepository.save(aluno);
 	}
 	
 }
