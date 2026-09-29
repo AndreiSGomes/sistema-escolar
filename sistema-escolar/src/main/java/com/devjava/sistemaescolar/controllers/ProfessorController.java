@@ -33,10 +33,7 @@ public class ProfessorController {
 	@GetMapping("/{id}")
 	public ResponseEntity<Professor> buscarPorId(@PathVariable Integer id) {
 		Professor professor = professorService.buscarPorId(id);
-		if(professor != null) {
-			return ResponseEntity.ok().body(professor);
-		}
-		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(professor);
+		return ResponseEntity.ok().body(professor);
 	}
 	
 	@GetMapping
