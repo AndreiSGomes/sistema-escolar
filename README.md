@@ -2,7 +2,7 @@
 
 Projeto de estudo com **Java + Spring Boot + JPA/Hibernate + PostgreSQL**, desenvolvido em etapas incrementais, com commits progressivos documentando a evolução.
 
-> 🔧 **Status atual:** CRUD básico de Aluno, Professor e Turma funcionando via API REST, com PostgreSQL + JPA/Hibernate. Relacionamentos entre entidades corrigidos e conferidos. Próximos passos: entidade `TurmaDisciplinaProfessor`, tratamento global de erros e endpoints CRUD restantes.
+> 🔧 **Status atual:** API REST completa para as 7 entidades (Aluno, Professor, Turma, Disciplina, TurmaDisciplinaProfessor, Nota, Falta), com CRUD completo, PostgreSQL + JPA/Hibernate e tratamento global de erros (`@RestControllerAdvice`) já implementado. Próximos passos: regras de negócio de Nota/Falta, seed de dados, DTOs e documentação da API.
 
 ---
 
@@ -136,7 +136,7 @@ Porque no modelo a partir do 6º ano, uma turma tem vários professores (um de M
 - [x] Criar entidade `Aluno` (com `@ManyToOne` pra `Turma`)
 - [x] Criar entidade `Professor`
 - [x] Criar entidade `Disciplina`
-- [ ] Criar entidade associativa `TurmaDisciplinaProfessor` — classe já existe, mas **ainda sem anotações JPA** (`@Entity`, `@Id`, `@ManyToOne`); hoje é uma classe Java comum, não persistida
+- [x] Criar entidade associativa `TurmaDisciplinaProfessor` — já com `@Entity`, `@Id` e os 3 `@ManyToOne` (Turma, Disciplina, Professor)
 - [x] Criar entidade `Nota`
 - [x] Criar entidade `Falta`
 - [x] Mapear relacionamentos (`@OneToMany`, `@ManyToOne`) — mapeamentos corrigidos e conferidos
@@ -147,9 +147,9 @@ Porque no modelo a partir do 6º ano, uma turma tem vários professores (um de M
 - [x] Criar `AlunoRepository`
 - [x] Criar `ProfessorRepository`
 - [x] Criar `DisciplinaRepository`
-- [ ] Criar `TurmaDisciplinaProfessorRepository` — depende da entidade ser mapeada primeiro
-- [x] Criar `NotaRepository` (ainda sem métodos de busca customizados por aluno/bimestre — só CRUD padrão)
-- [x] Criar `FaltaRepository` (ainda sem métodos de contagem customizados — só CRUD padrão)
+- [x] Criar `TurmaDisciplinaProfessorRepository`
+- [x] Criar `NotaRepository`
+- [x] Criar `FaltaRepository`
 - [x] Commit: "feat: repositórios JPA"
 
 ### Etapa 4 — Seed de dados de teste
@@ -157,22 +157,23 @@ Porque no modelo a partir do 6º ano, uma turma tem vários professores (um de M
 - [ ] Commit: "feat: dados de teste (seed)"
 
 ### Etapa 5 — Camada de serviço
-- [x] Criar `TurmaService` (`insert`, `findById`, `findAll`)
-- [x] Criar `AlunoService` (`save` já busca e vincula `Turma`; trata turma inexistente com exceção customizada)
-- [x] Criar `ProfessorService` (`insert`, `findById`, `findAll`)
-- [ ] Criar `TurmaDisciplinaProfessorService`
-- [ ] Criar `NotaService` — CRUD básico existe (`insert`, `findById`, `findAll`), mas **ainda falta a lógica de cálculo de média** por aluno/disciplina/bimestre
-- [ ] Criar `FaltaService` — CRUD básico existe, mas **ainda falta a lógica de contagem/percentual** de faltas por aluno
-- [ ] Criar exceções customizadas — `ControllerNotFoundException` já existe, mas só é usada no `AlunoService`; os demais services usam `.get()` direto no `Optional` (gera erro genérico se o ID não existir, em vez de uma exceção tratada)
+- [x] Criar `TurmaService` (CRUD completo: `salvar`, `buscarPorId`, `buscarTodos`, `atualizar`, `deletarPorId`)
+- [x] Criar `AlunoService` (CRUD completo; busca e vincula `Turma`; trata turma inexistente com exceção customizada)
+- [x] Criar `ProfessorService` (CRUD completo)
+- [x] Criar `TurmaDisciplinaProfessorService` (CRUD completo; valida existência de Turma, Disciplina e Professor)
+- [ ] Criar `NotaService` — CRUD completo implementado (incluindo `atualizar`/`deletarPorId`), mas **ainda falta a lógica de cálculo de média** por aluno/disciplina/bimestre
+- [ ] Criar `FaltaService` — CRUD completo implementado, mas **ainda falta a lógica de contagem/percentual** de faltas por aluno
+- [x] Criar exceções customizadas — `NaoEncontradoException` + `ErroPadrao`, usadas de forma **consistente em todos os 7 services** via `.orElseThrow()`
 - [x] Commit: "feat: camada de serviço"
 
 ### Etapa 6 — Camada REST (Controllers)
-- [ ] Criar `TurmaController` — só `POST` implementado; faltam `GET` (all/by id), `PUT`, `DELETE`
-- [ ] Criar `AlunoController` — `GET` (all/by id) e `POST` prontos; faltam `PUT`, `DELETE`
-- [ ] Criar `ProfessorController` — `GET` (all/by id) e `POST` prontos; faltam `PUT`, `DELETE`
-- [ ] Criar `NotaController`
-- [ ] Criar `FaltaController`
-- [ ] Criar handler global de exceções (`@ControllerAdvice`) — **próxima etapa prioritária**
+- [x] Criar `TurmaController` (CRUD completo: `POST`, `GET` all/by id, `PUT`, `DELETE`)
+- [x] Criar `AlunoController` (CRUD completo)
+- [x] Criar `ProfessorController` (CRUD completo)
+- [x] Criar `TurmaDisciplinaProfessorController` (CRUD completo)
+- [x] Criar `NotaController` (CRUD completo)
+- [x] Criar `FaltaController` (CRUD completo)
+- [x] Criar handler global de exceções (`@RestControllerAdvice`) — `NaoEncontradoExceptionHandler`, convertendo `NaoEncontradoException` em resposta `404` com corpo padronizado (`ErroPadrao`: timestamp, status, error, path)
 - [x] Testar endpoints via Postman/Insomnia
 - [x] Commit: "feat: endpoints REST"
 
@@ -200,15 +201,15 @@ Porque no modelo a partir do 6º ano, uma turma tem vários professores (um de M
 > 💡 Essa etapa foi deixada por último de propósito — segurança/autenticação costuma ser mais fácil de entender depois que o CRUD básico já está funcionando e testado.
 
 
-## 🎯 Próximos passos (a retomar futuramente)
+## 🎯 Próximos passos
 
-O mapeamento de relacionamentos (`@OneToMany`/`mappedBy`) já foi corrigido e conferido. Os itens abaixo ficam registrados para uma próxima sessão de desenvolvimento:
+Toda a camada REST está completa e o tratamento global de erros já está no ar (`@RestControllerAdvice` + `NaoEncontradoException` + `ErroPadrao`), padronizado em todos os 7 recursos. O que fica registrado para as próximas etapas:
 
-1. Mapear `TurmaDisciplinaProfessor` como entidade JPA (`@Entity`, `@Id`, `@ManyToOne` nos 3 relacionamentos), e então criar seu `Repository`, `Service` e `Controller`
-2. Padronizar o tratamento de "não encontrado" em todos os services (hoje só `AlunoService` trata isso; os demais usam `.get()` direto no `Optional`)
-3. Criar o `@ControllerAdvice` (handler global de exceções), convertendo `ControllerNotFoundException` em resposta `404`
-4. Completar os endpoints CRUD que faltam (`PUT`, `DELETE` em Aluno/Professor/Turma; controllers inteiros de Disciplina/Nota/Falta)
-5. Implementar a lógica de negócio pendente em `NotaService` (cálculo de média) e `FaltaService` (contagem/percentual)
+1. Implementar a lógica de negócio pendente em `NotaService` (cálculo de média por aluno/disciplina/bimestre) e `FaltaService` (contagem/percentual de faltas por aluno)
+2. Criar seed de dados de teste (`CommandLineRunner`) pra facilitar testes manuais e futuras demos
+3. Pequena limpeza: remover verificação `if (professor != null)` redundante em `ProfessorController.buscarPorId` (código morto — o `Service` já lança exceção antes de chegar lá)
+4. Etapa 7: DTOs, Bean Validation, Swagger/OpenAPI, CORS
+5. Etapa 9 (futuro): perfis de acesso com Spring Security
 
 ---
 
