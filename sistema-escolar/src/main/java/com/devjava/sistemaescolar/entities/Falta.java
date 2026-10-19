@@ -30,8 +30,7 @@ public class Falta  implements Serializable {
 	
 	public Falta() {}
 
-	public Falta(Integer id, LocalDate data, boolean justificada, Aluno aluno) {
-		this.id = id;
+	public Falta(LocalDate data, boolean justificada, Aluno aluno) {
 		this.data = data;
 		this.justificada = justificada;
 		this.aluno = aluno;	
@@ -39,10 +38,6 @@ public class Falta  implements Serializable {
 
 	public Integer getId() {
 		return id;
-	}
-
-	public void setId(Integer id) {
-		this.id = id;
 	}
 
 	public boolean getJustificada() {

@@ -1,6 +1,7 @@
 package com.devjava.sistemaescolar.services;
 
 import java.util.List;
+
 import org.springframework.stereotype.Service;
 import com.devjava.sistemaescolar.entities.Professor;
 import com.devjava.sistemaescolar.exceptions.NaoEncontradoException;
@@ -17,6 +18,7 @@ public class ProfessorService {
 	
 	public Professor salvar(Professor obj) {
 		Professor professor = new Professor();
+		
 		professor.setNome(obj.getNome());
 		professor.setDataNascimento(obj.getDataNascimento());
 		professor.setCpf(obj.getCpf());

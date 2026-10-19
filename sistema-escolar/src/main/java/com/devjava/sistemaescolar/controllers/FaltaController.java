@@ -11,7 +11,8 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import com.devjava.sistemaescolar.entities.Falta;
+import com.devjava.sistemaescolar.dto.request.FaltaRequest;
+import com.devjava.sistemaescolar.dto.response.FaltaResponse;
 import com.devjava.sistemaescolar.services.FaltaService;
 
 @RestController
@@ -24,20 +25,20 @@ public class FaltaController {
 	}
 	
 	@PostMapping
-	public ResponseEntity<Falta> salvar(@RequestBody Falta obj) {
-		Falta falta = faltaService.salvar(obj);
+	public ResponseEntity<FaltaResponse> salvar(@RequestBody FaltaRequest request) {
+		FaltaResponse falta = faltaService.salvar(request);
 		return ResponseEntity.status(HttpStatus.CREATED).body(falta);
 	}
 	
 	@GetMapping("/{id}")
-	public ResponseEntity<Falta> buscarPorId(@PathVariable Integer id) {
-		Falta falta = faltaService.buscarPorId(id);
+	public ResponseEntity<FaltaResponse> buscarPorId(@PathVariable Integer id) {
+		FaltaResponse falta = faltaService.buscarPorId(id);
 		return ResponseEntity.ok().body(falta);
 	}
 	
 	@GetMapping
-	public ResponseEntity<List<Falta>> buscarTodos() {
-		List<Falta> faltas = faltaService.buscarTodos();
+	public ResponseEntity<List<FaltaResponse>> buscarTodos() {
+		List<FaltaResponse> faltas = faltaService.buscarTodos();
 		return ResponseEntity.ok().body(faltas);
 	}
 	
@@ -48,8 +49,8 @@ public class FaltaController {
 	}
 	
 	@PutMapping("/{id}")
-	public ResponseEntity<Falta> atualizar(@PathVariable Integer id, @RequestBody Falta obj) {
-		Falta falta = faltaService.atualizar(id, obj);
+	public ResponseEntity<FaltaResponse> atualizar(@PathVariable Integer id, @RequestBody FaltaRequest request) {
+		FaltaResponse falta = faltaService.atualizar(id, request);
 		return ResponseEntity.ok().body(falta);
 	}
 }

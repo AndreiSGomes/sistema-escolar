@@ -1,7 +1,12 @@
 package com.devjava.sistemaescolar.services;
 
+import java.util.ArrayList;
 import java.util.List;
+
 import org.springframework.stereotype.Service;
+
+import com.devjava.sistemaescolar.dto.request.AlunoRequest;
+import com.devjava.sistemaescolar.dto.response.AlunoResponse;
 import com.devjava.sistemaescolar.entities.Aluno;
 import com.devjava.sistemaescolar.entities.Turma;
 import com.devjava.sistemaescolar.exceptions.NaoEncontradoException;
@@ -19,29 +24,23 @@ public class AlunoService {
 		this.turmaRepository = turmaRepository;
 	}
 	
-	public Aluno salvar(Aluno obj) {
-		Turma turma = turmaRepository.findById(obj.getTurma().getId()).orElseThrow(() -> new NaoEncontradoException(obj.getTurma().getId()));	
+	public AlunoResponse salvar(AlunoRequest request) {
+		Turma turma = turmaRepository.findById(request.turmaId()).orElseThrow(() -> new NaoEncontradoException(request.turmaId()));
+		Aluno aluno = AlunoRequest.toAluno(request, turma);
 		
-		Aluno aluno = new Aluno();
-		aluno.setNome(obj.getNome());
-		aluno.setDataNascimento(obj.getDataNascimento());
-		aluno.setEndereco(obj.getEndereco());
-		aluno.setNomeResponsavel(obj.getNomeResponsavel());
-		aluno.setCpfResponsavel(obj.getCpfResponsavel());
-		aluno.setCelularResponsavel(obj.getCelularResponsavel());
-		aluno.setEmailResponsavel(obj.getEmailResponsavel());
-		aluno.setTurma(turma);
-		
-		return alunoRepository.save(aluno);
+		return AlunoResponse.toAlunoResponse(alunoRepository.save(aluno));
 	}
 	
-	public Aluno buscarPorId(Integer id) {
-		Aluno aluno = alunoRepository.findById(id).orElseThrow(() -> new NaoEncontradoException(id));
-		return aluno;
+	public AlunoResponse buscarPorId(Integer id) {
+		return AlunoResponse.toAlunoResponse(alunoRepository.findById(id).orElseThrow(() -> new NaoEncontradoException(id)));
 	}
 	
-	public List<Aluno> buscarTodos() {
-		List<Aluno> alunos = alunoRepository.findAll();
+	public List<AlunoResponse> buscarTodos() {
+		List<AlunoResponse> alunos = new ArrayList<>();
+		for(Aluno aluno : alunoRepository.findAll()) {
+			alunos.add(AlunoResponse.toAlunoResponse(aluno));
+		}
+		
 		return alunos;
 	}
 	
@@ -50,20 +49,20 @@ public class AlunoService {
 		alunoRepository.deleteById(id);
 	}
 	
-	public Aluno atualizar(Integer id, Aluno obj) {
-		Aluno aluno = buscarPorId(id);
-		Turma turma = turmaRepository.findById(obj.getTurma().getId()).orElseThrow(() -> new NaoEncontradoException(obj.getTurma().getId())); 
+	public AlunoResponse atualizar(Integer id, AlunoRequest request) {
+		Aluno aluno = alunoRepository.findById(id).orElseThrow(() -> new NaoEncontradoException(id));
+		Turma turma = turmaRepository.findById(aluno.getTurma().getId()).orElseThrow(() -> new NaoEncontradoException(aluno.getTurma().getId())); 
 		
-		aluno.setNome(obj.getNome());
-		aluno.setDataNascimento(obj.getDataNascimento());
-		aluno.setEndereco(obj.getEndereco());
-		aluno.setNomeResponsavel(obj.getNomeResponsavel());
-		aluno.setCpfResponsavel(obj.getCpfResponsavel());
-		aluno.setCelularResponsavel(obj.getCelularResponsavel());
-		aluno.setEmailResponsavel(obj.getEmailResponsavel());
+		aluno.setNome(request.nome());
+		aluno.setDataNascimento(request.dataNascimento());
+		aluno.setEndereco(request.endereco());
+		aluno.setNomeResponsavel(request.nomeResponsavel());
+		aluno.setCpfResponsavel(request.cpfResponsavel());
+		aluno.setCelularResponsavel(request.celularResponsavel());
+		aluno.setEmailResponsavel(request.emailResponsavel());
 		aluno.setTurma(turma);
 		
-		return alunoRepository.save(aluno);
+		return AlunoResponse.toAlunoResponse(alunoRepository.save(aluno));
 	}
 	
 }

@@ -41,9 +41,7 @@ public class Turma implements Serializable {
 	
 	public Turma() {}
 
-	public Turma(Integer id, Integer serie, String turno, Integer anoLetivo, Character complemento) {
-		super();
-		this.id = id;
+	public Turma(Integer serie, String turno, Integer anoLetivo, Character complemento) {
 		this.serie = serie;
 		this.turno = turno;
 		this.anoLetivo = anoLetivo;
@@ -52,10 +50,6 @@ public class Turma implements Serializable {
 
 	public Integer getId() {
 		return id;
-	}
-
-	public void setId(Integer id) {
-		this.id = id;
 	}
 
 	public Integer getSerie() {

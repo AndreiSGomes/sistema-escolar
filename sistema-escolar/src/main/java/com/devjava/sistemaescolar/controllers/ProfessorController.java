@@ -1,6 +1,7 @@
 package com.devjava.sistemaescolar.controllers;
 
 import java.util.List;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -26,8 +27,8 @@ public class ProfessorController {
 	
 	@PostMapping
 	public ResponseEntity<Professor> salvar(@RequestBody Professor obj) {
-		Professor professor = professorService.salvar(obj);
-		return ResponseEntity.status(HttpStatus.CREATED).body(professor);
+		Professor response = professorService.salvar(obj);
+		return ResponseEntity.status(HttpStatus.CREATED).body(response);
 	}
 	
 	@GetMapping("/{id}")
