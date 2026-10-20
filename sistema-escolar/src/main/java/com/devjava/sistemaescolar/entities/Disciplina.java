@@ -37,17 +37,13 @@ public class Disciplina implements Serializable {
 	
 	public Disciplina() {}
 	
-	public Disciplina(Integer id, String nome, Integer cargaHoraria) {
-		this.id = id;
+	public Disciplina(String nome, Integer cargaHoraria) {
 		this.nome = nome;
 		this.cargaHoraria = cargaHoraria;
 	}
 
 	public Integer getId() {
 		return id;
-	}
-	public void setId(Integer id) {
-		this.id = id;
 	}
 
 	public String getNome() {

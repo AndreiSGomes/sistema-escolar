@@ -1,7 +1,10 @@
 package com.devjava.sistemaescolar.services;
 
+import java.util.ArrayList;
 import java.util.List;
 import org.springframework.stereotype.Service;
+import com.devjava.sistemaescolar.dto.request.TurmaRequest;
+import com.devjava.sistemaescolar.dto.response.TurmaResponse;
 import com.devjava.sistemaescolar.entities.Turma;
 import com.devjava.sistemaescolar.exceptions.NaoEncontradoException;
 import com.devjava.sistemaescolar.repositories.TurmaRepository;
@@ -15,23 +18,21 @@ public class TurmaService {
 		this.turmaRepository = turmaRepository;
 	}
 
-	public Turma salvar(Turma obj) {
-		Turma turma = new Turma();
-		turma.setSerie(obj.getSerie());
-		turma.setTurno(obj.getTurno());
-		turma.setAnoLetivo(obj.getAnoLetivo());
-		turma.setComplemento(obj.getComplemento());
+	public TurmaResponse salvar(TurmaRequest request) {
+		return TurmaResponse.toTurmaResponse(turmaRepository.save(TurmaRequest.toTurma(request)));
+	}
+	
+	public TurmaResponse buscarPorId(Integer id) {
+		return TurmaResponse.toTurmaResponse(turmaRepository.findById(id).orElseThrow(() -> new NaoEncontradoException(id)));
+	}
+	
+	public List<TurmaResponse> buscarTodos() {
+		List<TurmaResponse> turmas = new ArrayList<>();
 		
-		return turmaRepository.save(turma);
-	}
-	
-	public Turma buscarPorId(Integer id) {
-		Turma turma = turmaRepository.findById(id).orElseThrow(() -> new NaoEncontradoException(id));
-		return turma;
-	}
-	
-	public List<Turma> buscarTodos() {
-		List<Turma> turmas = turmaRepository.findAll();
+		for(Turma turma : turmaRepository.findAll()) {
+			turmas.add(TurmaResponse.toTurmaResponse(turma));
+		}
+		
 		return turmas;
 	}	
 	
@@ -40,14 +41,14 @@ public class TurmaService {
 		turmaRepository.deleteById(id);
 	}
 	
-	public Turma atualizar(Integer id, Turma obj) {
-		Turma turma = buscarPorId(id);
+	public TurmaResponse atualizar(Integer id, TurmaRequest request) {
+		Turma turma = turmaRepository.findById(id).orElseThrow(() -> new NaoEncontradoException(id));
 		
-		turma.setSerie(obj.getSerie());
-		turma.setTurno(obj.getTurno());
-		turma.setAnoLetivo(obj.getAnoLetivo());
-		turma.setComplemento(obj.getComplemento());
+		turma.setSerie(request.serie());
+		turma.setTurno(request.turno());
+		turma.setAnoLetivo(request.anoLetivo());
+		turma.setComplemento(request.complemento());
 		
-		return turmaRepository.save(turma);
+		return TurmaResponse.toTurmaResponse(turmaRepository.save(turma));
 	}
 }

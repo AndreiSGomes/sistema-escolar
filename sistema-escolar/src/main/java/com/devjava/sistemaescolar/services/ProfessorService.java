@@ -1,7 +1,12 @@
 package com.devjava.sistemaescolar.services;
 
+import java.util.ArrayList;
 import java.util.List;
+
 import org.springframework.stereotype.Service;
+
+import com.devjava.sistemaescolar.dto.request.ProfessorRequest;
+import com.devjava.sistemaescolar.dto.response.ProfessorResponse;
 import com.devjava.sistemaescolar.entities.Professor;
 import com.devjava.sistemaescolar.exceptions.NaoEncontradoException;
 import com.devjava.sistemaescolar.repositories.ProfessorRepository;
@@ -15,25 +20,21 @@ public class ProfessorService {
 		this.professorRepository = professorRepository;
 	}
 	
-	public Professor salvar(Professor obj) {
-		Professor professor = new Professor();
-		professor.setNome(obj.getNome());
-		professor.setDataNascimento(obj.getDataNascimento());
-		professor.setCpf(obj.getCpf());
-		professor.setEndereco(obj.getEndereco());
-		professor.setCelular(obj.getCelular());
-		professor.setEmail(obj.getEmail());
+	public ProfessorResponse salvar(ProfessorRequest request) {	
+		return ProfessorResponse.toProfessorResponse(professorRepository.save(ProfessorRequest.toProfessor(request)));
+	}
+	
+	public ProfessorResponse buscarPorId(Integer id) {
+		return ProfessorResponse.toProfessorResponse(professorRepository.findById(id).orElseThrow(() -> new NaoEncontradoException(id)));
+	}
+	
+	public List<ProfessorResponse> buscarTodos() {
+		List<ProfessorResponse> professores = new ArrayList<>();
 		
-		return professorRepository.save(professor);
-	}
-	
-	public Professor buscarPorId(Integer id) {
-		Professor professor = professorRepository.findById(id).orElseThrow(() -> new NaoEncontradoException(id));
-		return professor;
-	}
-	
-	public List<Professor> buscarTodos() {
-		List<Professor> professores = professorRepository.findAll();
+		for(Professor professor : professorRepository.findAll()) {
+			professores.add(ProfessorResponse.toProfessorResponse(professor));
+		}
+		
 		return professores;
 	}
 	
@@ -42,16 +43,16 @@ public class ProfessorService {
 		professorRepository.deleteById(id);
 	}
 	
-	public Professor atualizar(Integer id, Professor obj) {
-		Professor professor = buscarPorId(id);
+	public ProfessorResponse atualizar(Integer id, ProfessorRequest request) {
+		Professor professor = professorRepository.findById(id).orElseThrow(() -> new NaoEncontradoException(id));
 		
-		professor.setNome(obj.getNome());
-		professor.setDataNascimento(obj.getDataNascimento());
-		professor.setEndereco(obj.getEndereco());
-		professor.setCpf(obj.getCpf());
-		professor.setCelular(obj.getCelular());
-		professor.setEmail(obj.getEmail());
+		professor.setNome(request.nome());
+		professor.setDataNascimento(request.dataNascimento());
+		professor.setEndereco(request.endereco());
+		professor.setCpf(request.cpf());
+		professor.setCelular(request.celular());
+		professor.setEmail(request.email());
 		
-		return professorRepository.save(professor);
+		return ProfessorResponse.toProfessorResponse(professorRepository.save(professor));
 	}
 }

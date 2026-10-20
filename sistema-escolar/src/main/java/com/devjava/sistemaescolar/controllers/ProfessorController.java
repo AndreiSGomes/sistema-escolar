@@ -1,6 +1,7 @@
 package com.devjava.sistemaescolar.controllers;
 
 import java.util.List;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -11,6 +12,8 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import com.devjava.sistemaescolar.dto.request.ProfessorRequest;
+import com.devjava.sistemaescolar.dto.response.ProfessorResponse;
 import com.devjava.sistemaescolar.entities.Professor;
 import com.devjava.sistemaescolar.services.ProfessorService;
 
@@ -25,20 +28,20 @@ public class ProfessorController {
 	}
 	
 	@PostMapping
-	public ResponseEntity<Professor> salvar(@RequestBody Professor obj) {
-		Professor professor = professorService.salvar(obj);
+	public ResponseEntity<ProfessorResponse> salvar(@RequestBody ProfessorRequest request) {
+		ProfessorResponse professor = professorService.salvar(request);
 		return ResponseEntity.status(HttpStatus.CREATED).body(professor);
 	}
 	
 	@GetMapping("/{id}")
-	public ResponseEntity<Professor> buscarPorId(@PathVariable Integer id) {
-		Professor professor = professorService.buscarPorId(id);
+	public ResponseEntity<ProfessorResponse> buscarPorId(@PathVariable Integer id) {
+		ProfessorResponse professor = professorService.buscarPorId(id);
 		return ResponseEntity.ok().body(professor);
 	}
 	
 	@GetMapping
-	public ResponseEntity<List<Professor>> buscarTodos() {
-		List<Professor> professores = professorService.buscarTodos();
+	public ResponseEntity<List<ProfessorResponse>> buscarTodos() {
+		List<ProfessorResponse> professores = professorService.buscarTodos();
 		return ResponseEntity.ok().body(professores);
 	}
 	
@@ -49,8 +52,8 @@ public class ProfessorController {
 	}
 	
 	@PutMapping("/{id}")
-	public ResponseEntity<Professor> atualizar(@PathVariable Integer id, @RequestBody Professor obj) {
-		Professor professor = professorService.atualizar(id, obj);
+	public ResponseEntity<ProfessorResponse> atualizar(@PathVariable Integer id, @RequestBody ProfessorRequest request) {
+		ProfessorResponse professor = professorService.atualizar(id, request);
 		return ResponseEntity.ok().body(professor);
 	}
 	

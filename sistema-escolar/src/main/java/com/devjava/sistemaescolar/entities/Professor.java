@@ -38,10 +38,7 @@ public class Professor implements Serializable{
 	
 	public Professor() {}
 
-	public Professor(Integer id, String cpf, String nome, LocalDate dataNascimento, String endereco, String celular,
-			String email) {
-		super();
-		this.id = id;
+	public Professor(String cpf, String nome, LocalDate dataNascimento, String endereco, String celular,String email) {
 		this.cpf = cpf;
 		this.nome = nome;
 		this.dataNascimento = dataNascimento;
@@ -49,13 +46,10 @@ public class Professor implements Serializable{
 		this.celular = celular;
 		this.email = email;
 	}
+	
 
 	public Integer getId() {
 		return id;
-	}
-
-	public void setId(Integer id) {
-		this.id = id;
 	}
 
 	public String getCpf() {

@@ -11,7 +11,8 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import com.devjava.sistemaescolar.entities.Disciplina;
+import com.devjava.sistemaescolar.dto.request.DisciplinaRequest;
+import com.devjava.sistemaescolar.dto.response.DisciplinaResponse;
 import com.devjava.sistemaescolar.services.DisciplinaService;
 
 @RestController
@@ -25,20 +26,20 @@ public class DisciplinaController {
 	}
 	
 	@PostMapping
-	public ResponseEntity<Disciplina> salvar(@RequestBody Disciplina obj) {
-		Disciplina disciplina = disciplinaService.salvar(obj);
+	public ResponseEntity<DisciplinaResponse> salvar(@RequestBody DisciplinaRequest request) {
+		DisciplinaResponse disciplina = disciplinaService.salvar(request);
 		return ResponseEntity.status(HttpStatus.CREATED).body(disciplina);
 	}
 	
 	@GetMapping(value = "/{id}")
-	public ResponseEntity<Disciplina> buscarPorId(@PathVariable Integer id) {
-		Disciplina disciplina = disciplinaService.buscarPorId(id);
+	public ResponseEntity<DisciplinaResponse> buscarPorId(@PathVariable Integer id) {
+		DisciplinaResponse disciplina = disciplinaService.buscarPorId(id);
 		return ResponseEntity.ok().body(disciplina);
 	}
 	
 	@GetMapping
-	public ResponseEntity<List<Disciplina>> buscarTodos() {
-		List<Disciplina> disciplinas = disciplinaService.buscarTodos();
+	public ResponseEntity<List<DisciplinaResponse>> buscarTodos() {
+		List<DisciplinaResponse> disciplinas = disciplinaService.buscarTodos();
 		return ResponseEntity.ok().body(disciplinas);
 	}
 	
@@ -49,8 +50,8 @@ public class DisciplinaController {
 	}
 	
 	@PutMapping("/{id}")
-	public ResponseEntity<Disciplina> atualizar(@PathVariable Integer id, @RequestBody Disciplina obj) {
-		Disciplina disciplina = disciplinaService.atualizar(id, obj);
+	public ResponseEntity<DisciplinaResponse> atualizar(@PathVariable Integer id, @RequestBody DisciplinaRequest request) {
+		DisciplinaResponse disciplina = disciplinaService.atualizar(id, request);
 		return ResponseEntity.ok().body(disciplina);
 	}
 }
