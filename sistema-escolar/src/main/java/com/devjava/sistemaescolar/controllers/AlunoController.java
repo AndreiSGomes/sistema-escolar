@@ -11,7 +11,8 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import com.devjava.sistemaescolar.entities.Aluno;
+import com.devjava.sistemaescolar.dto.request.AlunoRequest;
+import com.devjava.sistemaescolar.dto.response.AlunoResponse;
 import com.devjava.sistemaescolar.services.AlunoService;
 
 @RestController
@@ -26,20 +27,20 @@ public class AlunoController {
 	}
 	
 	@PostMapping
-	public ResponseEntity<Aluno> salvar(@RequestBody Aluno obj) {
-		Aluno aluno = alunoService.salvar(obj);
+	public ResponseEntity<AlunoResponse> salvar(@RequestBody AlunoRequest request) {
+		AlunoResponse aluno = alunoService.salvar(request);
 		return ResponseEntity.status(HttpStatus.CREATED).body(aluno);
 	}
 	
 	@GetMapping("/{id}")
-	public ResponseEntity<Aluno> buscarPorId(@PathVariable Integer id) {
-		Aluno aluno = alunoService.buscarPorId(id);
+	public ResponseEntity<AlunoResponse> buscarPorId(@PathVariable Integer id) {
+		AlunoResponse aluno = alunoService.buscarPorId(id);
 		return ResponseEntity.ok().body(aluno);
 	}
 	
 	@GetMapping
-	public ResponseEntity<List<Aluno>> buscarTodos() {
-		List<Aluno> alunos = alunoService.buscarTodos();
+	public ResponseEntity<List<AlunoResponse>> buscarTodos() {
+		List<AlunoResponse> alunos = alunoService.buscarTodos();
 		return ResponseEntity.ok().body(alunos);
 	}
 	
@@ -50,8 +51,8 @@ public class AlunoController {
 	}
 	
 	@PutMapping("/{id}")
-	public ResponseEntity<Aluno> atualizar(@PathVariable Integer id, @RequestBody Aluno obj) {
-		Aluno aluno = alunoService.atualizar(id, obj);
+	public ResponseEntity<AlunoResponse> atualizar(@PathVariable Integer id, @RequestBody AlunoRequest request) {
+		AlunoResponse aluno = alunoService.atualizar(id, request);
 		return ResponseEntity.ok().body(aluno);
 	}
 	

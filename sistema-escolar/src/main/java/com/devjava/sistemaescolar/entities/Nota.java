@@ -32,8 +32,7 @@ public class Nota implements Serializable {
 	
 	public Nota() {}
 	
-	public Nota(Integer id, Float valor, Integer bimestre, String descricao, Aluno aluno, Disciplina disciplina) {
-		this.id = id;
+	public Nota(Float valor, Integer bimestre, String descricao, Aluno aluno, Disciplina disciplina) {
 		this.valor = valor;
 		this.bimestre = bimestre;
 		this.descricao = descricao;
@@ -44,9 +43,6 @@ public class Nota implements Serializable {
 
 	public Integer getId() {
 		return id;
-	}
-	public void setId(Integer id) {
-		this.id = id;
 	}
 	
 	public Float getValor() {

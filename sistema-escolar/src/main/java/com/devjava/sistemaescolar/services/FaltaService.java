@@ -1,7 +1,10 @@
 package com.devjava.sistemaescolar.services;
 
+import java.util.ArrayList;
 import java.util.List;
 import org.springframework.stereotype.Service;
+import com.devjava.sistemaescolar.dto.request.FaltaRequest;
+import com.devjava.sistemaescolar.dto.response.FaltaResponse;
 import com.devjava.sistemaescolar.entities.Aluno;
 import com.devjava.sistemaescolar.entities.Falta;
 import com.devjava.sistemaescolar.exceptions.NaoEncontradoException;
@@ -19,24 +22,23 @@ public class FaltaService {
 		this.alunoRepository = alunoRepository;
 	}
 	
-	public Falta salvar(Falta obj) {
-		Aluno aluno = alunoRepository.findById(obj.getAluno().getId()).orElseThrow(() -> new NaoEncontradoException(obj.getAluno().getId()));
+	public FaltaResponse salvar(FaltaRequest request) {
+		Aluno aluno = alunoRepository.findById(request.alunoId()).orElseThrow(() -> new NaoEncontradoException(request.alunoId()));
 		
-		Falta falta = new Falta();
-		falta.setData(obj.getData());
-		falta.setJustificada(obj.getJustificada());
-		falta.setAluno(aluno);
-		
-		return faltaRepository.save(falta);
+		return FaltaResponse.toFaltaResponse(faltaRepository.save(new Falta(request.data(), request.justificada(), aluno)));
 	}
 	
-	public Falta buscarPorId(Integer id) {
-		Falta falta = faltaRepository.findById(id).orElseThrow(() -> new NaoEncontradoException(id));
-		return falta;
+	public FaltaResponse buscarPorId(Integer id) {
+		return FaltaResponse.toFaltaResponse(faltaRepository.findById(id).orElseThrow(() -> new NaoEncontradoException(id)));
 	}
 	
-	public List<Falta> buscarTodos() {
-		List<Falta> faltas = faltaRepository.findAll();
+	public List<FaltaResponse> buscarTodos() {
+		List<FaltaResponse> faltas = new ArrayList<>();
+		
+		for(Falta falta : faltaRepository.findAll()) {
+			faltas.add(FaltaResponse.toFaltaResponse(falta));
+		}
+		
 		return faltas;
 	}
 	
@@ -45,14 +47,15 @@ public class FaltaService {
 		faltaRepository.deleteById(id);
 	}
 	
-	public Falta atualizar(Integer id, Falta obj) {
-		Falta falta = buscarPorId(id);
-		Aluno aluno = alunoRepository.findById(obj.getAluno().getId()).orElseThrow(() -> new NaoEncontradoException(obj.getAluno().getId()));
+	public FaltaResponse atualizar(Integer id, FaltaRequest request) {
+		Falta falta = faltaRepository.findById(id).orElseThrow(() -> new NaoEncontradoException(id));
 		
-		falta.setData(obj.getData());
-		falta.setJustificada(obj.getJustificada());
+		Aluno aluno = alunoRepository.findById(request.alunoId()).orElseThrow(() -> new NaoEncontradoException(request.alunoId()));
+		
+		falta.setData(request.data());
+		falta.setJustificada(request.justificada());
 		falta.setAluno(aluno);
 		
-		return faltaRepository.save(falta);
+		return FaltaResponse.toFaltaResponse(faltaRepository.save(falta));
 	}
 }

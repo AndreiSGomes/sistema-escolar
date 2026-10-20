@@ -2,9 +2,7 @@ package com.devjava.sistemaescolar.services;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import org.springframework.stereotype.Service;
-
 import com.devjava.sistemaescolar.dto.request.ProfessorRequest;
 import com.devjava.sistemaescolar.dto.response.ProfessorResponse;
 import com.devjava.sistemaescolar.entities.Professor;

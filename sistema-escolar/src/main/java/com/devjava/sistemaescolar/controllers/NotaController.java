@@ -11,7 +11,8 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import com.devjava.sistemaescolar.entities.Nota;
+import com.devjava.sistemaescolar.dto.request.NotaRequest;
+import com.devjava.sistemaescolar.dto.response.NotaResponse;
 import com.devjava.sistemaescolar.services.NotaService;
 
 @RestController
@@ -25,20 +26,20 @@ public class NotaController {
 	}
 	
 	@PostMapping
-	public ResponseEntity<Nota> salvar(@RequestBody Nota obj){
-		Nota nota = notaService.salvar(obj);
+	public ResponseEntity<NotaResponse> salvar(@RequestBody NotaRequest request){
+		NotaResponse nota = notaService.salvar(request);
 		return ResponseEntity.status(HttpStatus.CREATED).body(nota);
 	}
 	
 	@GetMapping(value = "/{id}")
-	public ResponseEntity<Nota> buscarPorId(@PathVariable Integer id){
-		Nota nota =  notaService.buscarPorId(id);
+	public ResponseEntity<NotaResponse> buscarPorId(@PathVariable Integer id){
+		NotaResponse nota =  notaService.buscarPorId(id);
 		return ResponseEntity.ok().body(nota);
 	}
 	
 	@GetMapping
-	public ResponseEntity<List<Nota>> buscarTodos(){
-		List<Nota> notas = notaService.buscarTodos();
+	public ResponseEntity<List<NotaResponse>> buscarTodos(){
+		List<NotaResponse> notas = notaService.buscarTodos();
 		return ResponseEntity.ok().body(notas);
 	}
 	
@@ -49,8 +50,8 @@ public class NotaController {
 	}
 	
 	@PutMapping("/{id}")
-	public ResponseEntity<Nota> atualizar(@PathVariable Integer id, @RequestBody Nota obj) {
-		Nota nota = notaService.atualizar(id, obj);
+	public ResponseEntity<NotaResponse> atualizar(@PathVariable Integer id, @RequestBody NotaRequest request) {
+		NotaResponse nota = notaService.atualizar(id, request);
 		return ResponseEntity.ok().body(nota);
 	}
 

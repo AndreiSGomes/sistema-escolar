@@ -5,8 +5,11 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+
+import com.devjava.sistemaescolar.dto.request.AlunoRequest;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -53,9 +56,8 @@ public class Aluno implements Serializable{
 	
 	public Aluno() { }
 	
-	public Aluno(Integer id, String nome, LocalDate dataNascimento, String endereco, String nomeResponsavel,
+	public Aluno(String nome, LocalDate dataNascimento, String endereco, String nomeResponsavel,
 			String cpfResponsavel, String celularResponsavel, String emailResponsavel, Turma turma) {
-		this.id = id;
 		this.nome = nome;
 		this.dataNascimento = dataNascimento;
 		this.endereco = endereco;
@@ -68,9 +70,6 @@ public class Aluno implements Serializable{
 
 	public Integer getId() {
 		return id;
-	}
-	public void setId(Integer id) {
-		this.id = id;
 	}
 
 	public String getNome() {
@@ -128,6 +127,7 @@ public class Aluno implements Serializable{
 	public void setTurma(Turma turma) {
 		this.turma = turma;
 	}
+
 	
 	@Override
 	public int hashCode() {

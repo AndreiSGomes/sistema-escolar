@@ -1,7 +1,6 @@
 package com.devjava.sistemaescolar.controllers;
 
 import java.util.List;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -14,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.devjava.sistemaescolar.dto.request.ProfessorRequest;
 import com.devjava.sistemaescolar.dto.response.ProfessorResponse;
-import com.devjava.sistemaescolar.entities.Professor;
 import com.devjava.sistemaescolar.services.ProfessorService;
 
 @RestController

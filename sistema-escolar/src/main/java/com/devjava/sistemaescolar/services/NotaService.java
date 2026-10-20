@@ -1,7 +1,10 @@
 package com.devjava.sistemaescolar.services;
 
+import java.util.ArrayList;
 import java.util.List;
 import org.springframework.stereotype.Service;
+import com.devjava.sistemaescolar.dto.request.NotaRequest;
+import com.devjava.sistemaescolar.dto.response.NotaResponse;
 import com.devjava.sistemaescolar.entities.Aluno;
 import com.devjava.sistemaescolar.entities.Disciplina;
 import com.devjava.sistemaescolar.entities.Nota;
@@ -23,27 +26,23 @@ public class NotaService {
 		this.disciplinaRepository = disciplinaRepository;
 	}
 	
-	public Nota salvar(Nota obj) {
-		Aluno aluno = alunoRepository.findById(obj.getAluno().getId()).orElseThrow(() -> new NaoEncontradoException(obj.getAluno().getId()));
-		Disciplina disciplina = disciplinaRepository.findById(obj.getDisciplina().getId()).orElseThrow(() -> new NaoEncontradoException(obj.getDisciplina().getId()));
-				
-		Nota nota = new Nota();
-		nota.setValor(obj.getValor());
-		nota.setBimestre(obj.getBimestre());
-		nota.setDescricao(obj.getDescricao());
-		nota.setAluno(aluno);
-		nota.setDisciplina(disciplina);
+	public NotaResponse salvar(NotaRequest request) {
+		Aluno aluno = alunoRepository.findById(request.alunoId()).orElseThrow(() -> new NaoEncontradoException(request.alunoId()));
+		Disciplina disciplina = disciplinaRepository.findById(request.disciplinaId()).orElseThrow(() -> new NaoEncontradoException(request.disciplinaId()));
 		
-		return notaRepository.save(nota);
+		return NotaResponse.toNotaResponse(notaRepository.save(new Nota(request.valor(), request.bimestre(), request.descricao(), aluno, disciplina)));
 	}
 	
-	public Nota buscarPorId(Integer id) {
-		Nota nota = notaRepository.findById(id).orElseThrow(() -> new NaoEncontradoException(id));
-		return nota;
+	public NotaResponse buscarPorId(Integer id) {
+		return NotaResponse.toNotaResponse(notaRepository.findById(id).orElseThrow(() -> new NaoEncontradoException(id)));
 	}
 	
-	public List<Nota> buscarTodos() {
-		List<Nota> notas = notaRepository.findAll();
+	public List<NotaResponse> buscarTodos() {
+		List<NotaResponse> notas = new ArrayList<>();
+		for(Nota nota : notaRepository.findAll()) {
+			notas.add(NotaResponse.toNotaResponse(nota));
+		}
+		
 		return notas;
 	}
 	
@@ -52,18 +51,18 @@ public class NotaService {
 		notaRepository.deleteById(id);
 	}
 	
-	public Nota atualizar(Integer id, Nota obj) {
-		Nota nota = buscarPorId(id);
-		Aluno aluno = alunoRepository.findById(obj.getAluno().getId()).orElseThrow(() -> new NaoEncontradoException(obj.getAluno().getId()));
-		Disciplina disciplina = disciplinaRepository.findById(obj.getDisciplina().getId()).orElseThrow(() -> new NaoEncontradoException(obj.getDisciplina().getId()));
+	public NotaResponse atualizar(Integer id, NotaRequest request) {
+		Nota nota = notaRepository.findById(id).orElseThrow(() -> new NaoEncontradoException(id));
+		Aluno aluno = alunoRepository.findById(request.alunoId()).orElseThrow(() -> new NaoEncontradoException(request.alunoId()));
+		Disciplina disciplina = disciplinaRepository.findById(request.disciplinaId()).orElseThrow(() -> new NaoEncontradoException(request.disciplinaId()));
 				
-		nota.setValor(obj.getValor());
-		nota.setBimestre(obj.getBimestre());
-		nota.setDescricao(obj.getDescricao());
+		nota.setValor(request.valor());
+		nota.setBimestre(request.bimestre());
+		nota.setDescricao(request.descricao());
 		nota.setAluno(aluno);
 		nota.setDisciplina(disciplina);
 		
-		return notaRepository.save(nota);
+		return NotaResponse.toNotaResponse(notaRepository.save(nota));
 	}
 	
 }
