@@ -11,7 +11,8 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import com.devjava.sistemaescolar.entities.TurmaDisciplinaProfessor;
+import com.devjava.sistemaescolar.dto.request.TurmaDisciplinaProfessorRequest;
+import com.devjava.sistemaescolar.dto.response.TurmaDisciplinaProfessorResponse;
 import com.devjava.sistemaescolar.services.TurmaDisciplinaProfessorService;
 
 @RestController
@@ -25,21 +26,21 @@ public class TurmaDisciplinaProfessorController {
 	}
 	
 	@PostMapping
-	public ResponseEntity<TurmaDisciplinaProfessor> insert(@RequestBody TurmaDisciplinaProfessor obj) {
-		TurmaDisciplinaProfessor turmaDisciplinaProfessor = turmaDisciplinaProfessorService.salvar(obj);
-		return ResponseEntity.status(HttpStatus.CREATED).body(turmaDisciplinaProfessor);
+	public ResponseEntity<TurmaDisciplinaProfessorResponse> insert(@RequestBody TurmaDisciplinaProfessorRequest request) {
+		TurmaDisciplinaProfessorResponse turmaDisciplinaProfessorResponse = turmaDisciplinaProfessorService.salvar(request);
+		return ResponseEntity.status(HttpStatus.CREATED).body(turmaDisciplinaProfessorResponse);
 	}
 	
 	@GetMapping("/{id}")
-	public ResponseEntity<TurmaDisciplinaProfessor> findById(@PathVariable Integer id) {
-		TurmaDisciplinaProfessor turmaDisciplinaProfessor = turmaDisciplinaProfessorService.buscarPorId(id);
-		return ResponseEntity.ok().body(turmaDisciplinaProfessor);
+	public ResponseEntity<TurmaDisciplinaProfessorResponse> findById(@PathVariable Integer id) {
+		TurmaDisciplinaProfessorResponse turmaDisciplinaProfessorResponse = turmaDisciplinaProfessorService.buscarPorId(id);
+		return ResponseEntity.ok().body(turmaDisciplinaProfessorResponse);
 	}
 	
 	@GetMapping
-	public ResponseEntity<List<TurmaDisciplinaProfessor>> findAll() {
-		List<TurmaDisciplinaProfessor> turmaDisciplinaProfessor = turmaDisciplinaProfessorService.buscarTodos();
-		return ResponseEntity.ok().body(turmaDisciplinaProfessor);
+	public ResponseEntity<List<TurmaDisciplinaProfessorResponse>> findAll() {
+		List<TurmaDisciplinaProfessorResponse> turmaDisciplinaProfessorResponse = turmaDisciplinaProfessorService.buscarTodos();
+		return ResponseEntity.ok().body(turmaDisciplinaProfessorResponse);
 	}
 	
 	@DeleteMapping("/{id}")
@@ -49,8 +50,8 @@ public class TurmaDisciplinaProfessorController {
 	}
 	
 	@PutMapping("/{id}")
-	public ResponseEntity<TurmaDisciplinaProfessor> atualizar(@PathVariable Integer id, @RequestBody TurmaDisciplinaProfessor obj) {
-		TurmaDisciplinaProfessor turmaDisciplinaProfessor = turmaDisciplinaProfessorService.atualizar(id, obj);
-		return ResponseEntity.ok().body(turmaDisciplinaProfessor);
+	public ResponseEntity<TurmaDisciplinaProfessorResponse> atualizar(@PathVariable Integer id, @RequestBody TurmaDisciplinaProfessorRequest request) {
+		TurmaDisciplinaProfessorResponse turmaDisciplinaProfessorResponse = turmaDisciplinaProfessorService.atualizar(id, request);
+		return ResponseEntity.ok().body(turmaDisciplinaProfessorResponse);
 	}
 }

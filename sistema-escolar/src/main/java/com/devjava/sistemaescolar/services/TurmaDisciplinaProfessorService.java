@@ -1,7 +1,10 @@
 package com.devjava.sistemaescolar.services;
 
+import java.util.ArrayList;
 import java.util.List;
 import org.springframework.stereotype.Service;
+import com.devjava.sistemaescolar.dto.request.TurmaDisciplinaProfessorRequest;
+import com.devjava.sistemaescolar.dto.response.TurmaDisciplinaProfessorResponse;
 import com.devjava.sistemaescolar.entities.Disciplina;
 import com.devjava.sistemaescolar.entities.Professor;
 import com.devjava.sistemaescolar.entities.Turma;
@@ -27,27 +30,25 @@ public class TurmaDisciplinaProfessorService {
 		this.professorRepository = professorRepository;
 	}
 	
-	public TurmaDisciplinaProfessor salvar(TurmaDisciplinaProfessor obj) {
-		Turma turma = turmaRepository.findById(obj.getTurma().getId()).orElseThrow(() -> new NaoEncontradoException(obj.getTurma().getId()));
-		Disciplina disciplina = disciplinaRepository.findById(obj.getDisciplina().getId()).orElseThrow(() -> new NaoEncontradoException(obj.getDisciplina().getId()));
-		Professor professor = professorRepository.findById(obj.getProfessor().getId()).orElseThrow(() -> new NaoEncontradoException(obj.getProfessor().getId()));
+	public TurmaDisciplinaProfessorResponse salvar(TurmaDisciplinaProfessorRequest request) {
+		Turma turma = turmaRepository.findById(request.turmaId()).orElseThrow(() -> new NaoEncontradoException(request.turmaId()));
+		Disciplina disciplina = disciplinaRepository.findById(request.disciplinaId()).orElseThrow(() -> new NaoEncontradoException(request.disciplinaId()));
+		Professor professor = professorRepository.findById(request.professorId()).orElseThrow(() -> new NaoEncontradoException(request.professorId()));
+		TurmaDisciplinaProfessor turmaDisciplinaProfessor = new TurmaDisciplinaProfessor(turma, disciplina, professor);
 		
-		TurmaDisciplinaProfessor turmaDisciplinaProfessor = new TurmaDisciplinaProfessor();
-		turmaDisciplinaProfessor.setTurma(turma);
-		turmaDisciplinaProfessor.setDisciplina(disciplina);
-		turmaDisciplinaProfessor.setProfessor(professor);
-		
-		return turmaDisciplinaProfessorRepository.save(turmaDisciplinaProfessor);
+		return TurmaDisciplinaProfessorResponse.toTurmaDisciplinaProfessorResponse(turmaDisciplinaProfessorRepository.save(turmaDisciplinaProfessor));
 	}
 	
-	public List<TurmaDisciplinaProfessor> buscarTodos() {
-		List<TurmaDisciplinaProfessor> turmaDisciplinaProfessor = turmaDisciplinaProfessorRepository.findAll();
-		return turmaDisciplinaProfessor;
+	public List<TurmaDisciplinaProfessorResponse> buscarTodos() {
+		List<TurmaDisciplinaProfessorResponse> turmasDisciplinasProfessores = new ArrayList<>();
+		for(TurmaDisciplinaProfessor turmaDisciplinaProfessor : turmaDisciplinaProfessorRepository.findAll()) {
+			turmasDisciplinasProfessores.add(TurmaDisciplinaProfessorResponse.toTurmaDisciplinaProfessorResponse(turmaDisciplinaProfessor));
+		}
+		return turmasDisciplinasProfessores;
 	}
 	
-	public TurmaDisciplinaProfessor buscarPorId(Integer id) {
-		TurmaDisciplinaProfessor turmaDisciplinaProfessor = turmaDisciplinaProfessorRepository.findById(id).orElseThrow(() -> new NaoEncontradoException(id));
-		return turmaDisciplinaProfessor;
+	public TurmaDisciplinaProfessorResponse buscarPorId(Integer id) {
+		return TurmaDisciplinaProfessorResponse.toTurmaDisciplinaProfessorResponse(turmaDisciplinaProfessorRepository.findById(id).orElseThrow(() -> new NaoEncontradoException(id)));
 	}
 	
 	public void deletarPorId(Integer id) {
@@ -55,18 +56,18 @@ public class TurmaDisciplinaProfessorService {
 		turmaDisciplinaProfessorRepository.deleteById(id);
 	}
 	
-	public TurmaDisciplinaProfessor atualizar(Integer id, TurmaDisciplinaProfessor obj) {
-		TurmaDisciplinaProfessor turmaDisciplinaProfessor = buscarPorId(id);
+	public TurmaDisciplinaProfessorResponse atualizar(Integer id, TurmaDisciplinaProfessorRequest request) {
+		TurmaDisciplinaProfessor turmaDisciplinaProfessor = turmaDisciplinaProfessorRepository.findById(id).orElseThrow(() -> new NaoEncontradoException(id));
 		
-		Turma turma = turmaRepository.findById(obj.getTurma().getId()).orElseThrow(() -> new NaoEncontradoException(obj.getTurma().getId()));
-		Disciplina disciplina = disciplinaRepository.findById(obj.getDisciplina().getId()).orElseThrow(() -> new NaoEncontradoException(obj.getDisciplina().getId()));
-		Professor professor = professorRepository.findById(obj.getProfessor().getId()).orElseThrow(() -> new NaoEncontradoException(obj.getProfessor().getId()));
+		Turma turma = turmaRepository.findById(request.turmaId()).orElseThrow(() -> new NaoEncontradoException(request.turmaId()));
+		Disciplina disciplina = disciplinaRepository.findById(request.disciplinaId()).orElseThrow(() -> new NaoEncontradoException(request.disciplinaId()));
+		Professor professor = professorRepository.findById(request.professorId()).orElseThrow(() -> new NaoEncontradoException(request.professorId()));
 		
 		turmaDisciplinaProfessor.setTurma(turma);
 		turmaDisciplinaProfessor.setDisciplina(disciplina);
 		turmaDisciplinaProfessor.setProfessor(professor);
 		
-		return turmaDisciplinaProfessorRepository.save(turmaDisciplinaProfessor);
+		return TurmaDisciplinaProfessorResponse.toTurmaDisciplinaProfessorResponse(turmaDisciplinaProfessorRepository.save(turmaDisciplinaProfessor));
 	}
 	
 }

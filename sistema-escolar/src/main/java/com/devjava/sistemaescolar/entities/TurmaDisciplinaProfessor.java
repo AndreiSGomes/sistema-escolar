@@ -33,8 +33,7 @@ public class TurmaDisciplinaProfessor implements Serializable {
 	
 	public TurmaDisciplinaProfessor() {}
 
-	public TurmaDisciplinaProfessor(Integer id, Turma turma, Disciplina disciplina, Professor professor) {
-		this.id = id;
+	public TurmaDisciplinaProfessor(Turma turma, Disciplina disciplina, Professor professor) {
 		this.turma = turma;
 		this.disciplina = disciplina;
 		this.professor = professor;
@@ -42,10 +41,6 @@ public class TurmaDisciplinaProfessor implements Serializable {
 
 	public Integer getId() {
 		return id;
-	}
-
-	public void setId(Integer id) {
-		this.id = id;
 	}
 
 	public Turma getTurma() {
